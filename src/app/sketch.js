@@ -34,9 +34,8 @@ const sketch = (p5) => {
                     window.player.lasers.splice(index, 1)
                     return false
                 }
-                if (laser.expire()) {
-                    window.player.lasers.splice(index, 1)
-                }
+                
+                laser.expire() && window.player.lasers.splice(index, 1)
                 return true
             })
         })

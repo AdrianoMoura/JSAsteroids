@@ -62,7 +62,6 @@ export default class Player extends Entity {
     }
 
     die() {
-
         this.brokenParts = Array.from({ length: 4 }, () => ({
             pos: this.pos.copy(),
             vel: p5.createVector(p5.random(-1, 1), p5.random(-1,1)),
@@ -80,10 +79,9 @@ export default class Player extends Entity {
 
     render() {
         if (this.died) {
-            if (p5.millis() - this.startDie > this.dieTimeout) {
-                this.died = false
-            }
+            this.died = !(p5.millis() - this.startDie > this.dieTimeout)
 
+            // Draw broken parts
             this.brokenParts.forEach(part => {
                 part.pos.add(part.vel)
                 part.heading += part.rotation
@@ -99,6 +97,7 @@ export default class Player extends Entity {
             return
         }
 
+        // Draw ship
         p5.push()
         p5.noFill()
         p5.stroke(255)
@@ -114,12 +113,13 @@ export default class Player extends Entity {
 
         p5.endShape(p5.CLOSE)
 
+        // Draw fire when accel is greaten than 0
         if (this.accel > 0 && p5.frameCount % 5 > 2) {
             p5.beginShape()
 
-            p5.vertex(4, 8)
-            p5.vertex(0, 15)
-            p5.vertex(-4, 8)
+            p5.vertex(this.size*.4, this.size*.8)
+            p5.vertex(0, this.size*1.5)
+            p5.vertex(-this.size*.4, this.size*.8)
 
             p5.endShape()
         }
