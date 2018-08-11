@@ -21,16 +21,16 @@ export default class Entity {
 
         this.pos.add(this.vel);
 
-        if (this.pos.x > p5.windowWidth + this.size) {
-            this.pos.x = 0 - this.size
-        } else if (this.pos.x < 0 - this.size) {
-            this.pos.x = p5.windowWidth + this.size
+        if (this.pos.x > p5.windowWidth + this.radius) {
+            this.pos.x = 0 - this.radius
+        } else if (this.pos.x < 0 - this.radius) {
+            this.pos.x = p5.windowWidth + this.radius
         } 
         
-        if (this.pos.y > p5.windowHeight + this.size) {
-            this.pos.y = 0 - this.size
-        } else if (this.pos.y < 0 - this.size) {
-            this.pos.y = p5.windowHeight + this.size
+        if (this.pos.y > p5.windowHeight + this.radius) {
+            this.pos.y = 0 - this.radius
+        } else if (this.pos.y < 0 - this.radius) {
+            this.pos.y = p5.windowHeight + this.radius
         } 
     }
 

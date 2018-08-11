@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -22,12 +23,18 @@ module.exports = {
             options: {
                 presets: ['es2015']
             }
-        },]
+        },{ 
+            test: /\.(otf)$/, 
+            loader: "file" 
+        }]
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'head'
         }),
-    ],
+        new CopyWebpackPlugin([
+            { from: 'static' }
+        ])
+    ]
 };
