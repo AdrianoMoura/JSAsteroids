@@ -4,15 +4,38 @@ export default class Asteroid extends Entity {
     constructor(pos, size) {
         super()
 
-        this.pos = pos ? pos.copy() : p5.createVector(p5.random(p5.windowWidth), p5.random(p5.windowHeight))
         this.size = size || 3
         this.vel = p5.createVector(p5.random(-3, 3), p5.random(-3, 3))
         this.vel.mult(p5.map(this.size, 1, 3, 1, .8))
-        // this.rotation = p5.random(-0.03, 0.03)
-        this.radius = p5.map(this.size,1,3,10,50)
+        this.radius = p5.map(this.size, 1, 3, 10, 50)
 
+        this.pos = pos ? pos.copy() : this.generateRandomPos()
+        
         this.sides = p5.floor(p5.random(8, 15))
         this.shape = Array.from({ length: this.sides }, () => p5.random(-this.radius * .3, this.radius * .3));
+    }
+
+    generateRandomPos() {
+        let isColliding = true
+        let pos
+        let dist
+
+        // Generate an random position for asteroids, but check if this position collide with players position if so generate a new position until is safe to start the game
+        while (isColliding) {
+            pos = p5.createVector(p5.random(p5.windowWidth), p5.random(p5.windowHeight))
+
+            if (player) {
+                dist = p5.dist(pos.x, pos.y, player.pos.x, player.pos.y)
+
+                if (dist > player.radius + this.radius*2) {
+                    isColliding = false
+                }
+            } else {
+                isColliding = false
+            }
+
+        }
+        return pos
     }
 
     split() {
@@ -20,8 +43,8 @@ export default class Asteroid extends Entity {
 
         if (this.size > 1)
             newAsteroids = [
-                new Asteroid(this.pos, this.size-1),
-                new Asteroid(this.pos, this.size-1)
+                new Asteroid(this.pos, this.size - 1),
+                new Asteroid(this.pos, this.size - 1)
             ]
 
         gameController.makePoint(this.size)
@@ -46,7 +69,7 @@ export default class Asteroid extends Entity {
         p5.push()
         p5.noFill()
         p5.stroke(255)
-        
+
         p5.translate(this.pos.x, this.pos.y)
         p5.beginShape()
 

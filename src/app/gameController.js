@@ -1,5 +1,4 @@
 import AsteroidsCollection from './collections/AsteroidsCollection';
-import DustCollection from './collections/DustCollection';
 import Player from './sprites/player';
 
 export default class GameController {
@@ -8,21 +7,22 @@ export default class GameController {
         this.gameOver = false
         this.calledNextLevel = false
         this.score = 0
-        this.maxScore = 0
-        this.lifes = 3
-        this.totalAsteroids = 5
+        this.maxScore = localStorage.getItem('maxscore') || 0
+        this.lifes
+        this.totalAsteroids
     }
 
     gameStart() {
         this.isStarted = true
+        this.totalAsteroids = 5
+        this.lifes = 3
+        this.score = 0
         this.gameOver = false
-        window.asteroidsCollection = new AsteroidsCollection(this.totalAsteroids)
-        window.dustCollection = new DustCollection()
         window.player = new Player()
+        window.asteroidsCollection = new AsteroidsCollection(this.totalAsteroids)
     }
 
     doGameOver() {
-        this.score = 0
         this.gameOver = true
         this.isStarted = false
 
@@ -56,7 +56,6 @@ export default class GameController {
 
                 // Restart
                 window.asteroidsCollection = new AsteroidsCollection(this.totalAsteroids)
-                window.player = new Player()
             }, 1000);
         }
     }
@@ -76,14 +75,10 @@ export default class GameController {
 
         this.score += increase
 
-        // Each 10k points the player won a new life
-        if (this.score % 10000 === 0) {
-            this.lifes++
-        }
-
         // Save the greatests score
         if (this.score > this.maxScore) {
             this.maxScore = this.score
+            localStorage.setItem('maxscore', this.maxScore)
         }
     }
 }

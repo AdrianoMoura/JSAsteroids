@@ -1,5 +1,7 @@
 import AsteroidsCollection from './collections/AsteroidsCollection';
 import GameController from './gameController';
+import Player from './sprites/player';
+import DustCollection from './collections/DustCollection';
 
 const sketch = (p5) => {
     window.p5 = p5
@@ -12,8 +14,12 @@ const sketch = (p5) => {
     // ======================================
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight)
+
+        // Create players and asteroids to demo the game before it start
         window.gameController = new GameController()
+        window.player = new Player()
         window.asteroidsCollection = new AsteroidsCollection(5)
+        window.dustCollection = new DustCollection()
         p5.textFont(font)
 
         p5.keyPressed = () => {
@@ -29,6 +35,7 @@ const sketch = (p5) => {
         p5.background(0)
 
         asteroidsCollection.draw()
+        dustCollection.draw()
 
         p5.textSize(28);
         p5.fill(255);
@@ -40,7 +47,7 @@ const sketch = (p5) => {
         p5.textAlign(p5.CENTER);
         p5.text(gameController.maxScore, p5.windowWidth / 2, 100);
 
-        for (let i = 0; i < gameController.lifes; i++) {
+        for (let i = 0; i < gameController.lifes-1; i++) {
             p5.push()
             p5.noFill()
             p5.stroke(255)
@@ -58,7 +65,6 @@ const sketch = (p5) => {
         }
 
         if (gameController.isStarted) {
-            dustCollection.draw()
             player.draw()
 
             if (asteroidsCollection.asteroids.length === 0) {

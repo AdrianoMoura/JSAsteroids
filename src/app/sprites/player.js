@@ -58,22 +58,22 @@ export default class Player extends Entity {
         if (dist < this.radius + asteroid.radius) {
             if (!this.died) {
                 this.die()
-                gameController.removeLife()
                 asteroid.split()
             }
+        }
 
-            // Isn't safe to respawn
+        // Isn't safe to respawn?
+        if (dist < this.radius + asteroid.radius*2) {
             this.isSafe = false
             clearTimeout(this.safeCheck)
             this.safeCheck = 0
-        }
-        
-        // Set an two seconds respawn delay if the zone is to dangerously
-        if (!this.safeCheck)
+            // Set one seconds respawn delay if the zone is to dangerously, this will prevent to player respawn and die instantly
             this.safeCheck = setTimeout(() => this.isSafe = true, 2000)
+        }
     }
 
     die() {
+        gameController.removeLife()
         this.brokenParts = Array.from({ length: 4 }, () => ({
             pos: this.pos.copy(),
             vel: p5.createVector(p5.random(-1, 1), p5.random(-1, 1)),
