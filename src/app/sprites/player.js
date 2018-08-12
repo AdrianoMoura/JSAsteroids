@@ -26,6 +26,7 @@ export default class Player extends Entity {
                 this.accel = .1
             }
             if (p5.key === ' ') {
+                soundController.laser()
                 this.lasers.push(new Laser(this.pos, this.heading))
             }
             if (p5.keyCode === p5.ENTER) {
@@ -108,6 +109,9 @@ export default class Player extends Entity {
 
             return
         }
+
+        if (this.accel > 0)
+            soundController.thrust()
 
         // Draw ship
         p5.push()

@@ -10,7 +10,7 @@ export default class Asteroid extends Entity {
         this.radius = p5.map(this.size, 1, 3, 10, 50)
 
         this.pos = pos ? pos.copy() : this.generateRandomPos()
-        
+
         this.sides = p5.floor(p5.random(8, 15))
         this.shape = Array.from({ length: this.sides }, () => p5.random(-this.radius * .3, this.radius * .3));
     }
@@ -27,7 +27,7 @@ export default class Asteroid extends Entity {
             if (player) {
                 dist = p5.dist(pos.x, pos.y, player.pos.x, player.pos.y)
 
-                if (dist > player.radius + this.radius*2) {
+                if (dist > player.radius + this.radius * 2) {
                     isColliding = false
                 }
             } else {
@@ -47,6 +47,18 @@ export default class Asteroid extends Entity {
                 new Asteroid(this.pos, this.size - 1)
             ]
 
+        switch (this.size) {
+            case 1:
+                soundController.smallExplosion()
+                break
+            case 2:
+                soundController.mediumExplosion()
+                break
+            case 3:
+                soundController.bigExplosion()
+                break
+        }
+
         gameController.makePoint(this.size)
         dustCollection.addDust(this.pos, this.radius)
         asteroidsCollection.splitAsteroid(this, newAsteroids);
@@ -59,6 +71,7 @@ export default class Asteroid extends Entity {
 
         if (dist < this.radius + laser.radius) {
             this.split()
+
             return true
         }
 

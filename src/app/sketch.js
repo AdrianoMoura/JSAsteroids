@@ -2,12 +2,14 @@ import AsteroidsCollection from './collections/AsteroidsCollection';
 import GameController from './gameController';
 import Player from './sprites/player';
 import DustCollection from './collections/DustCollection';
+import SoundController from './soundController';
 
 const sketch = (p5) => {
     window.p5 = p5
 
     p5.preload = () => {
-        window.font = p5.loadFont('Hyperspace.otf');
+        window.font = p5.loadFont('Hyperspace.otf')
+        window.soundController = new SoundController()
     }
 
     // Setup function
