@@ -17,17 +17,16 @@ export default class Player extends Entity {
     keyboardListener() {
         p5.keyPressed = () => {
             if (p5.keyCode === p5.LEFT_ARROW) {
-                this.rotation = -.08
+                this.rotate('LEFT')
             }
             if (p5.keyCode === p5.RIGHT_ARROW) {
-                this.rotation = .08
+                this.rotate('RIGHT')
             }
             if (p5.keyCode === p5.UP_ARROW) {
-                this.accel = .1
+                this.thrust()
             }
             if (p5.key === ' ') {
-                soundController.laser()
-                this.lasers.push(new Laser(this.pos, this.heading))
+                this.shoot()
             }
             if (p5.keyCode === p5.ENTER) {
                 this.warp()
@@ -35,16 +34,31 @@ export default class Player extends Entity {
         }
 
         p5.keyReleased = () => {
-            if (p5.keyCode === p5.LEFT_ARROW) {
-                this.rotation = 0
-            }
-            if (p5.keyCode === p5.RIGHT_ARROW) {
-                this.rotation = 0
+            if (p5.keyCode === p5.LEFT_ARROW || p5.keyCode === p5.RIGHT_ARROW) {
+                this.rotate()
             }
             if (p5.keyCode === p5.UP_ARROW) {
-                this.accel = 0
+                this.thrust(false)
             }
         }
+    }
+
+    shoot() {
+        soundController.laser()
+        this.lasers.push(new Laser(this.pos, this.heading))
+    }
+
+    rotate(direction) {
+        if (direction === 'LEFT')
+            this.rotation = -.08
+        else if (direction === 'RIGHT')
+            this.rotation = .08
+        else
+            this.rotation = 0
+    }
+
+    thrust(accel = true) {
+        this.accel = accel ? .1 : 0
     }
 
     warp() {
@@ -64,7 +78,7 @@ export default class Player extends Entity {
         }
 
         // Isn't safe to respawn?
-        if (dist < this.radius + asteroid.radius*2) {
+        if (dist < this.radius + asteroid.radius * 2) {
             this.isSafe = false
             clearTimeout(this.safeCheck)
             this.safeCheck = 0
