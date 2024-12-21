@@ -1,6 +1,6 @@
 # Asteroids Game with p5.js
 
-You can run access the GitHub Page (here)[https://adrianomoura.github.io/JSAsteroids/] and try it
+You can run access the GitHub Page [here](https://adrianomoura.github.io/JSAsteroids/) and try it
 
 If you want to clone and run it yourself 
 
